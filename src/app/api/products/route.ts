@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { Dimension } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { authOptions } from "@/lib/auth";
+import type { Dimension } from "@/lib/domain";
 import { productSchema } from "@/lib/validations";
 
 export async function GET(req: NextRequest) {
