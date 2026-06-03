@@ -1,4 +1,4 @@
-import { Role } from "@prisma/client";
+import type { Role } from "@/lib/domain";
 import "next-auth";
 import "next-auth/jwt";
 

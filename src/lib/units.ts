@@ -1,7 +1,8 @@
-import { Prisma, Unit, Dimension } from "@prisma/client";
+import Decimal from "decimal.js";
+import type { Dimension, Unit } from "@/lib/domain";
 
 export function toBaseQuantity(quantity: string | number, unit: Unit) {
-  const qty = new Prisma.Decimal(quantity);
+  const qty = new Decimal(quantity);
 
   switch (unit) {
     case "KG":

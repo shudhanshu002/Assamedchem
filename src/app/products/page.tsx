@@ -1,7 +1,7 @@
 import UserHeader from "@/components/UserHeader";
 import ProductOrderCard from "@/components/ProductOrderCard";
 import { prisma } from "@/lib/prisma";
-import { Dimension } from "@prisma/client";
+import type { Dimension } from "@/lib/domain";
 
 type Props = {
   searchParams: Promise<{

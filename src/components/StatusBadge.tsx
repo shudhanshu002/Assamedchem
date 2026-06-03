@@ -1,4 +1,4 @@
-import { OrderStatus } from "@prisma/client";
+import type { OrderStatus } from "@/lib/domain";
 
 export default function StatusBadge({ status }: { status: OrderStatus }) {
   const className =

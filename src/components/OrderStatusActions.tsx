@@ -1,8 +1,8 @@
 "use client";
 
-import { OrderStatus } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import type { OrderStatus } from "@/lib/domain";
 
 export default function OrderStatusActions({
   orderId,
