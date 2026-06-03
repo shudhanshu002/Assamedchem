@@ -1,5 +1,5 @@
+import { Dimension, Unit } from "@prisma/client";
 import Decimal from "decimal.js";
-import type { Dimension, Unit } from "@/lib/domain";
 
 export function toBaseQuantity(quantity: string | number, unit: Unit) {
   const qty = new Decimal(quantity);
@@ -7,19 +7,14 @@ export function toBaseQuantity(quantity: string | number, unit: Unit) {
   switch (unit) {
     case "KG":
       return qty.mul(1000);
-
     case "G":
       return qty;
-
     case "L":
       return qty.mul(1000);
-
     case "ML":
       return qty;
-
     case "UNIT":
       return qty;
-
     default:
       throw new Error("Invalid unit");
   }
