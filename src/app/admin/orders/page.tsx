@@ -5,6 +5,8 @@ import OrderStatusActions from '@/components/OrderStatusActions';
 import StatusBadge from '@/components/StatusBadge';
 import type { DecimalLike, Dimension, OrderStatus, Unit } from '@/lib/domain';
 
+export const dynamic = 'force-dynamic';
+
 type AdminOrderItem = {
     id: string;
     orderQty: DecimalLike;

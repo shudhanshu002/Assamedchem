@@ -13,6 +13,7 @@ export default function OrderStatusActions({
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const isFinal = currentStatus !== "PENDING";
 
   async function updateStatus(status: OrderStatus) {
     setLoading(true);
@@ -37,7 +38,7 @@ export default function OrderStatusActions({
   return (
     <div className="flex gap-2">
       <button
-        disabled={loading || currentStatus === "APPROVED"}
+        disabled={loading || isFinal}
         onClick={() => updateStatus("APPROVED")}
         className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-700 hover:bg-emerald-100 disabled:opacity-50"
       >
@@ -45,7 +46,7 @@ export default function OrderStatusActions({
       </button>
 
       <button
-        disabled={loading || currentStatus === "REJECTED"}
+        disabled={loading || isFinal}
         onClick={() => updateStatus("REJECTED")}
         className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-1.5 text-xs font-bold text-rose-700 hover:bg-rose-100 disabled:opacity-50"
       >

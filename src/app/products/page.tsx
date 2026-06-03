@@ -3,6 +3,8 @@ import ProductOrderCard from "@/components/ProductOrderCard";
 import { prisma } from "@/lib/prisma";
 import type { DecimalLike, Dimension, Unit } from "@/lib/domain";
 
+export const dynamic = "force-dynamic";
+
 type Props = {
   searchParams: Promise<{
     search?: string;

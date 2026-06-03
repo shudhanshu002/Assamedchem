@@ -6,6 +6,8 @@ import { formatINR } from '@/lib/units';
 import type { DecimalLike, Dimension, Unit } from '@/lib/domain';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 type ProductRow = {
     id: string;
     name: string;

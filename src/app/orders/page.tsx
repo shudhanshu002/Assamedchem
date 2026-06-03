@@ -7,6 +7,8 @@ import { formatINR } from '@/lib/units';
 import StatusBadge from '@/components/StatusBadge';
 import type { DecimalLike, OrderStatus, Unit } from '@/lib/domain';
 
+export const dynamic = 'force-dynamic';
+
 type UserOrderItem = {
     id: string;
     orderQty: DecimalLike;

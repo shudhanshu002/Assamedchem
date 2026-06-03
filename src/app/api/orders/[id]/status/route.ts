@@ -26,11 +26,25 @@ if (!parsed.success) {
 
 const data = parsed.data;
 
-  const order = await prisma.order.update({
-    where: { id },
+  const updated = await prisma.order.updateMany({
+    where: {
+      id,
+      status: "PENDING",
+    },
     data: {
       status: data.status,
     },
+  });
+
+  if (updated.count === 0) {
+    return NextResponse.json(
+      { error: "Only pending orders can be updated" },
+      { status: 409 }
+    );
+  }
+
+  const order = await prisma.order.findUnique({
+    where: { id },
   });
 
   return NextResponse.json(order);

@@ -4,6 +4,8 @@ import { formatINR } from "@/lib/units";
 import type { DecimalLike, OrderStatus } from "@/lib/domain";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 type InventoryProduct = {
   stockBaseQty: DecimalLike;
   pricePerBaseQty: DecimalLike;
