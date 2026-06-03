@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import Decimal from "decimal.js";
 import { prisma } from "@/lib/prisma";
 import { authOptions } from "@/lib/auth";
-import type { Unit } from "@/lib/domain";
+import type { DecimalLike, Unit } from "@/lib/domain";
 import { getAllowedUnits, toBaseQuantity } from "@/lib/units";
 import { orderSchema } from "@/lib/validations";
 
@@ -14,6 +14,16 @@ type OrderItemInput = {
   baseQty: string;
   pricePerBaseQty: string;
   lineTotal: string;
+};
+
+type OrderTransaction = {
+  product: {
+    findUnique(args: unknown): Promise<{ stockBaseQty: DecimalLike } | null>;
+    update(args: unknown): Promise<unknown>;
+  };
+  order: {
+    create(args: unknown): Promise<unknown>;
+  };
 };
 
 export async function POST(req: NextRequest) {
@@ -92,7 +102,7 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  const order = await prisma.$transaction(async (tx) => {
+  const order = await prisma.$transaction(async (tx: OrderTransaction) => {
     for (const item of orderItems) {
       const product = await tx.product.findUnique({
         where: { id: item.productId },
