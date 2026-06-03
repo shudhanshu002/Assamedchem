@@ -1,7 +1,7 @@
 import UserHeader from "@/components/UserHeader";
 import ProductOrderCard from "@/components/ProductOrderCard";
 import { prisma } from "@/lib/prisma";
-import type { Dimension } from "@/lib/domain";
+import type { DecimalLike, Dimension, Unit } from "@/lib/domain";
 
 type Props = {
   searchParams: Promise<{
@@ -10,12 +10,23 @@ type Props = {
   }>;
 };
 
+type ProductRow = {
+  id: string;
+  name: string;
+  sku: string;
+  description: string | null;
+  dimension: Dimension;
+  baseUnit: Unit;
+  stockBaseQty: DecimalLike;
+  pricePerBaseQty: DecimalLike;
+};
+
 export default async function ProductsPage({ searchParams }: Props) {
   const params = await searchParams;
   const search = params.search || "";
   const dimension = params.dimension || "";
 
-  const products = await prisma.product.findMany({
+  const products: ProductRow[] = await prisma.product.findMany({
     where: {
       isActive: true,
       ...(dimension
@@ -66,7 +77,7 @@ export default async function ProductsPage({ searchParams }: Props) {
         </form>
 
         <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {products.map((product) => (
+          {products.map((product: ProductRow) => (
             <ProductOrderCard
               key={product.id}
               product={{

@@ -5,13 +5,35 @@ import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { formatINR } from '@/lib/units';
 import StatusBadge from '@/components/StatusBadge';
+import type { DecimalLike, OrderStatus, Unit } from '@/lib/domain';
+
+type UserOrderItem = {
+    id: string;
+    orderQty: DecimalLike;
+    orderUnit: Unit;
+    baseQty: DecimalLike;
+    pricePerBaseQty: DecimalLike;
+    lineTotal: DecimalLike;
+    product: {
+        name: string;
+        baseUnit: Unit;
+    };
+};
+
+type UserOrder = {
+    id: string;
+    status: OrderStatus;
+    totalAmount: DecimalLike;
+    createdAt: Date;
+    items: UserOrderItem[];
+};
 
 export default async function UserOrdersPage() {
     const session = await getServerSession(authOptions);
 
     if (!session) redirect('/login');
 
-    const orders = await prisma.order.findMany({
+    const orders: UserOrder[] = await prisma.order.findMany({
         where: {
             userId: session.user.id,
         },
@@ -34,7 +56,7 @@ export default async function UserOrdersPage() {
                 <p className="page-subtitle">Your placed quotations/orders with conversion and pricing details.</p>
 
                 <div className="mt-6 space-y-5">
-                    {orders.map((order) => (
+                    {orders.map((order: UserOrder) => (
                         <div key={order.id} className="panel p-5">
                             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                                 <div>
@@ -63,7 +85,7 @@ export default async function UserOrdersPage() {
                                     </thead>
 
                                     <tbody>
-                                        {order.items.map((item) => (
+                                        {order.items.map((item: UserOrderItem) => (
                                             <tr key={item.id}>
                                                 <td className="px-3 py-2">{item.product.name}</td>
                                                 <td className="px-3 py-2">

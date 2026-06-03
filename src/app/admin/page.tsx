@@ -1,7 +1,22 @@
 import AdminHeader from "@/components/AdminHeader";
 import { prisma } from "@/lib/prisma";
 import { formatINR } from "@/lib/units";
+import type { DecimalLike, OrderStatus } from "@/lib/domain";
 import Link from "next/link";
+
+type InventoryProduct = {
+  stockBaseQty: DecimalLike;
+  pricePerBaseQty: DecimalLike;
+};
+
+type RecentOrder = {
+  id: string;
+  status: OrderStatus;
+  totalAmount: DecimalLike;
+  user: {
+    email: string;
+  };
+};
 
 export default async function AdminDashboardPage() {
   const [totalProducts, totalOrders, pendingOrders, products, orders] =
@@ -17,7 +32,10 @@ export default async function AdminDashboardPage() {
       }),
     ]);
 
-  const inventoryValue = products.reduce((sum, product) => {
+  const inventoryProducts = products as InventoryProduct[];
+  const recentOrders = orders as RecentOrder[];
+
+  const inventoryValue = inventoryProducts.reduce((sum, product: InventoryProduct) => {
     return sum + Number(product.stockBaseQty) * Number(product.pricePerBaseQty);
   }, 0);
 
@@ -75,7 +93,7 @@ export default async function AdminDashboardPage() {
               </thead>
 
               <tbody>
-                {orders.map((order) => (
+                {recentOrders.map((order: RecentOrder) => (
                   <tr key={order.id}>
                     <td className="px-3 py-2">#{order.id.slice(0, 8)}</td>
                     <td className="px-3 py-2">{order.user.email}</td>
@@ -86,7 +104,7 @@ export default async function AdminDashboardPage() {
                   </tr>
                 ))}
 
-                {orders.length === 0 && (
+                {recentOrders.length === 0 && (
                   <tr>
                     <td colSpan={4} className="px-3 py-6 text-center text-slate-500">
                       No orders yet.

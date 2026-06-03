@@ -3,10 +3,22 @@ import ProductCreateForm from '@/components/ProductCreateForm';
 import ProductDeleteButton from '@/components/ProductDeleteButton';
 import { prisma } from '@/lib/prisma';
 import { formatINR } from '@/lib/units';
+import type { DecimalLike, Dimension, Unit } from '@/lib/domain';
 import Link from 'next/link';
 
+type ProductRow = {
+    id: string;
+    name: string;
+    sku: string;
+    description: string | null;
+    dimension: Dimension;
+    baseUnit: Unit;
+    stockBaseQty: DecimalLike;
+    pricePerBaseQty: DecimalLike;
+};
+
 export default async function AdminProductsPage() {
-    const products = await prisma.product.findMany({
+    const products: ProductRow[] = await prisma.product.findMany({
         where: { isActive: true },
         orderBy: { createdAt: 'desc' },
     });
@@ -38,7 +50,7 @@ export default async function AdminProductsPage() {
                         </thead>
 
                         <tbody>
-                            {products.map((product) => (
+                            {products.map((product: ProductRow) => (
                                 <tr key={product.id}>
                                     <td className="px-4 py-3">
                                         <div className="font-bold text-slate-950">{product.name}</div>

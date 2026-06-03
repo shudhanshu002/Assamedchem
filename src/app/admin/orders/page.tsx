@@ -3,9 +3,37 @@ import { prisma } from '@/lib/prisma';
 import { formatINR } from '@/lib/units';
 import OrderStatusActions from '@/components/OrderStatusActions';
 import StatusBadge from '@/components/StatusBadge';
+import type { DecimalLike, Dimension, OrderStatus, Unit } from '@/lib/domain';
+
+type AdminOrderItem = {
+    id: string;
+    orderQty: DecimalLike;
+    orderUnit: Unit;
+    baseQty: DecimalLike;
+    pricePerBaseQty: DecimalLike;
+    lineTotal: DecimalLike;
+    product: {
+        name: string;
+        sku: string;
+        dimension: Dimension;
+        baseUnit: Unit;
+    };
+};
+
+type AdminOrder = {
+    id: string;
+    status: OrderStatus;
+    totalAmount: DecimalLike;
+    createdAt: Date;
+    user: {
+        name: string | null;
+        email: string;
+    };
+    items: AdminOrderItem[];
+};
 
 export default async function AdminOrdersPage() {
-    const orders = await prisma.order.findMany({
+    const orders: AdminOrder[] = await prisma.order.findMany({
         include: {
             user: true,
             items: {
@@ -26,7 +54,7 @@ export default async function AdminOrdersPage() {
                 <p className="page-subtitle">Admin view of quotations/orders with original units, converted base quantities, and INR pricing.</p>
 
                 <div className="mt-6 space-y-5">
-                    {orders.map((order) => (
+                    {orders.map((order: AdminOrder) => (
                         <div key={order.id} className="panel p-5">
                             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                                 <div>
@@ -59,7 +87,7 @@ export default async function AdminOrdersPage() {
                                     </thead>
 
                                     <tbody>
-                                        {order.items.map((item) => (
+                                        {order.items.map((item: AdminOrderItem) => (
                                             <tr key={item.id}>
                                                 <td className="px-3 py-2">
                                                     <div className="font-bold text-slate-950">{item.product.name}</div>
