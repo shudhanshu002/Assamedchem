@@ -1,5 +1,7 @@
-import { Dimension, Unit } from "@prisma/client";
 import Decimal from "decimal.js";
+
+export type Dimension = "WEIGHT" | "VOLUME" | "COUNT";
+export type Unit = "G" | "KG" | "ML" | "L" | "UNIT";
 
 export function toBaseQuantity(quantity: string | number, unit: Unit) {
   const qty = new Decimal(quantity);

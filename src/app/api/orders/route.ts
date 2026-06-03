@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { Prisma, Unit } from "@prisma/client";
+import { Unit } from "@prisma/client";
 import Decimal from "decimal.js";
 import { prisma } from "@/lib/prisma";
 import { authOptions } from "@/lib/auth";

@@ -2,8 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import { FormEvent, useMemo, useState } from "react";
-import type { Dimension, Unit } from "@/lib/domain";
-import { formatINR, getAllowedUnits, toBaseQuantity } from "@/lib/units";
+import {
+  Dimension,
+  Unit,
+  formatINR,
+  getAllowedUnits,
+  toBaseQuantity,
+} from "@/lib/units";
 
 type ProductCardData = {
   id: string;
